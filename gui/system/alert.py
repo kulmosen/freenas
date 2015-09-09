@@ -143,12 +143,13 @@ class AlertPlugins:
             return
 
         hostname = socket.gethostname()
+        UUID = subprocess.check_output("dmidecode | grep UUID | sed 's/.*: //'", shell=True)
         send_mail(
             subject='%s: %s' % (
                 hostname,
                 _("Critical Alerts").encode('utf8'),
             ),
-            text='\n'.join(msgs)
+            text='\n UUID: %s \n'.join(msgs) % (UUID)
         )
 
     def run(self):
